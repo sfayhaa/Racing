@@ -19,10 +19,7 @@ animate();
 function init() {
     // Scene
     scene = new THREE.Scene();
-    /*
-    const Texture = new THREE.TextureLoader().load('');
-    scene.background = Texture;
-    */
+    
     // Camera
     var screenWidth = window.innerWidth;
     var screenHeight = window.innerHeight;
@@ -91,41 +88,14 @@ function animate() {
 function update() {
     var delta = clock.getDelta();
     var moveDistance = 200 * delta;
-    //console.log(moveDistance);
-    //var rotateAngle = Math.PI / 2 * delta;
-
-    //            if (keyboard.pressed("A")) {
-    //                camera.rotation.z -= 0.2 * Math.PI / 180;
-    //                console.log("press A")
-    //            }
-    //            if (keyboard.pressed("D")) {
-    //                movingCube.rotation.y += rotateAngle;
-    //            }
-
+    
     if (keyboard.pressed("left") || keyboard.pressed("A")) {
         if (movingCube.position.x > -270)
             movingCube.position.x -= moveDistance;
-        /*
-            if (camera.position.x > -150) {
-            camera.position.x -= moveDistance * 0.6;
-            if (camera.rotation.z > -5 * Math.PI / 180) {
-                camera.rotation.z -= 0.2 * Math.PI / 180;
-            }
-            
-        }
-        */
     }
     if (keyboard.pressed("right") || keyboard.pressed("D")) {
         if (movingCube.position.x < 270)
             movingCube.position.x += moveDistance;
-        /*
-            if (camera.position.x < 150) {
-            camera.position.x += moveDistance * 0.6;
-            if (camera.rotation.z < 5 * Math.PI / 180) {
-                camera.rotation.z += 0.2 * Math.PI / 180;
-            }
-        }
-        */
     }
     if (keyboard.pressed("up") || keyboard.pressed("W")) {
         movingCube.position.z -= moveDistance;
@@ -133,13 +103,6 @@ function update() {
     if (keyboard.pressed("down") || keyboard.pressed("S")) {
         movingCube.position.z += moveDistance;
     }
-    /*
-        if (!(keyboard.pressed("left") || keyboard.pressed("right") ||
-            keyboard.pressed("A") || keyboard.pressed("D"))) {
-            delta = camera.rotation.z;
-            //camera.rotation.z -= delta / 10;
-        }
-    */
 
     var originPoint = movingCube.position.clone();
 
@@ -171,7 +134,6 @@ function update() {
 
         document.getElementById('explode_sound').play()
     } else {
-        //            message.innerText = "Safe";
         movingCube.material.color.setHex(0x00FFFF);
     }
 
@@ -187,39 +149,27 @@ function update() {
         } else {
             cubes[i].position.z += 10;
         }
-        //                renderer.render(scene, camera);
     }
-
+    
+    //Menambah skor
     score += 0.1;
     scoreText.innerText = "Score:" + Math.floor(score);
-
-    if (score < 0) {
-        //document.getElementById("score").value
+    
+    /*Perhitungan Skor*/
+    //Jika skor 0, maka game selesai
+    if (score < 0) { 
         clearTimeout(
             alert("Game Over!")
         );
         return score = 0;
-    } else if (score > 101) {
+    } 
+    //Jika skor telah mencapai 100, maka menang
+    else if (score > 101) {
         clearTimeout(
             alert("You Win!")
         );
         return score = 0;
     }
-
-    /*
-    if(score < 0) {
-        setTimeout( 
-            function() {
-                alert("Game Over!")
-            },1000
-        );
-        score = 0;
-        return;
-    }
-    */
-    //controls.update();
-}
-
 
 // Return a random number between min and max
 function getRandomArbitrary(min, max) {
