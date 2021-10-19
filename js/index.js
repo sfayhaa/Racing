@@ -1,4 +1,3 @@
-// 定义全局变量
 var container, scene, camera, renderer, controls;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock;
@@ -63,16 +62,19 @@ function init() {
 
     // Join the controlled cube
     var cubeGeometry = new THREE.CubeGeometry(50, 25, 60, 5, 5, 5);
-
+    var sphereGeometry = new THREE.SphereGeometry(15, 10, 10);
+    
     var wireMaterial = new THREE.MeshBasicMaterial({
         color: 0x00ff00,
         wireframe: true
     });
+    
+    var material = new THREE.MeshBasicMaterial({
+        color: 0x00FFFF
+    });
 
+    movingCube = new THREE.Mesh(sphereGeometry, material); 
 
-    movingCube = new THREE.Mesh(cubeGeometry, wireMaterial);
-    //            movingCube = new THREE.Mesh(cubeGeometry, material);
-    //            movingCube = new THREE.BoxHelper(movingCube);
     movingCube.position.set(0, 25, -20);
     scene.add(movingCube);
 
