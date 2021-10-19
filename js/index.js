@@ -1,4 +1,4 @@
-// 定义全局变量
+
 var container, scene, camera, renderer, controls;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock;
@@ -45,7 +45,7 @@ function init() {
     THREEx.WindowResize(renderer, camera);
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    // 加入两条直线
+    // Join two straight lines
     geometry = new THREE.Geometry();
     geometry.vertices.push(new THREE.Vector3(-250, -1, -3000));
     geometry.vertices.push(new THREE.Vector3(-300, -1, 200));
@@ -61,7 +61,7 @@ function init() {
     scene.add(line2);
 
 
-    // 加入控制的cube
+    // Join the controlled cube and sphere
     var cubeGeometry = new THREE.CubeGeometry(50, 25, 60, 5, 5, 5);
     var sphereGeometry = new THREE.SphereGeometry(15, 10, 10);
     
@@ -149,9 +149,9 @@ function update() {
     var originPoint = movingCube.position.clone();
 
     for (var vertexIndex = 0; vertexIndex < movingCube.geometry.vertices.length; vertexIndex++) {
-        // 顶点原始坐标
+        // The original coordinates of the vertex
         var localVertex = movingCube.geometry.vertices[vertexIndex].clone();
-        // 顶点经过变换后的坐标
+        // The coordinates of the vertices after transformation
         var globalVertex = localVertex.applyMatrix4(movingCube.matrix);
         var directionVector = globalVertex.sub(movingCube.position);
 
@@ -227,12 +227,12 @@ function update() {
 }
 
 
-// 返回一个介于min和max之间的随机数
+// Return a random number between min and max
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// 返回一个介于min和max之间的整型随机数
+// Return an integer random number between min and max
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
