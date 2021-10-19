@@ -1,3 +1,4 @@
+// 定义全局变量
 var container, scene, camera, renderer, controls;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock;
@@ -19,7 +20,11 @@ animate();
 function init() {
     // Scene
     scene = new THREE.Scene();
-    
+    //scene.background = new THREE.Color(0xffffff);
+    /*
+    const Texture = new THREE.TextureLoader().load('');
+    scene.background = Texture;
+    */
     // Camera
     var screenWidth = window.innerWidth;
     var screenHeight = window.innerHeight;
@@ -34,21 +39,18 @@ function init() {
     }
     renderer.setSize(screenWidth * 0.85, screenHeight * 0.85);
     renderer.setClearColor(0xcc5200);
-    
     container = document.getElementById("ThreeJS");
     container.appendChild(renderer.domElement);
 
     THREEx.WindowResize(renderer, camera);
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    // Join two straight lines
+    // 加入两条直线
     geometry = new THREE.Geometry();
     geometry.vertices.push(new THREE.Vector3(-250, -1, -3000));
     geometry.vertices.push(new THREE.Vector3(-300, -1, 200));
     material = new THREE.LineBasicMaterial({
-        color: 0x4d3319,
-        linewidth: 5,
-        fog: true
+        color: 0x4d3319, linewidth: 5, fog: true
     });
     var line1 = new THREE.Line(geometry, material);
     scene.add(line1);
@@ -59,7 +61,7 @@ function init() {
     scene.add(line2);
 
 
-    // Join the controlled cube
+    // 加入控制的cube
     var cubeGeometry = new THREE.CubeGeometry(50, 25, 60, 5, 5, 5);
     var sphereGeometry = new THREE.SphereGeometry(15, 10, 10);
     
@@ -72,8 +74,12 @@ function init() {
         color: 0x00FFFF
     });
 
+    //movingCube = new THREE.Mesh(cubeGeometry, wireMaterial);
+    //movingCube = new THREE.Mesh(sphereGeometry, wireMaterial);
     movingCube = new THREE.Mesh(sphereGeometry, material); 
 
+    //movingCube = new THREE.Mesh(cubeGeometry, material);
+    //movingCube = new THREE.BoxHelper(movingCube);
     movingCube.position.set(0, 25, -20);
     scene.add(movingCube);
 
@@ -90,14 +96,41 @@ function animate() {
 function update() {
     var delta = clock.getDelta();
     var moveDistance = 200 * delta;
-    
+    //console.log(moveDistance);
+    //var rotateAngle = Math.PI / 2 * delta;
+
+    //            if (keyboard.pressed("A")) {
+    //                camera.rotation.z -= 0.2 * Math.PI / 180;
+    //                console.log("press A")
+    //            }
+    //            if (keyboard.pressed("D")) {
+    //                movingCube.rotation.y += rotateAngle;
+    //            }
+
     if (keyboard.pressed("left") || keyboard.pressed("A")) {
         if (movingCube.position.x > -270)
             movingCube.position.x -= moveDistance;
+        /*
+            if (camera.position.x > -150) {
+            camera.position.x -= moveDistance * 0.6;
+            if (camera.rotation.z > -5 * Math.PI / 180) {
+                camera.rotation.z -= 0.2 * Math.PI / 180;
+            }
+            
+        }
+        */
     }
     if (keyboard.pressed("right") || keyboard.pressed("D")) {
         if (movingCube.position.x < 270)
             movingCube.position.x += moveDistance;
+        /*
+            if (camera.position.x < 150) {
+            camera.position.x += moveDistance * 0.6;
+            if (camera.rotation.z < 5 * Math.PI / 180) {
+                camera.rotation.z += 0.2 * Math.PI / 180;
+            }
+        }
+        */
     }
     if (keyboard.pressed("up") || keyboard.pressed("W")) {
         movingCube.position.z -= moveDistance;
@@ -105,13 +138,20 @@ function update() {
     if (keyboard.pressed("down") || keyboard.pressed("S")) {
         movingCube.position.z += moveDistance;
     }
+/*
+    if (!(keyboard.pressed("left") || keyboard.pressed("right") ||
+        keyboard.pressed("A") || keyboard.pressed("D"))) {
+        delta = camera.rotation.z;
+        //camera.rotation.z -= delta / 10;
+    }
+*/
 
     var originPoint = movingCube.position.clone();
 
     for (var vertexIndex = 0; vertexIndex < movingCube.geometry.vertices.length; vertexIndex++) {
-        // The original coordinates of the vertex
+        // 顶点原始坐标
         var localVertex = movingCube.geometry.vertices[vertexIndex].clone();
-        // The coordinates of the vertices after transformation
+        // 顶点经过变换后的坐标
         var globalVertex = localVertex.applyMatrix4(movingCube.matrix);
         var directionVector = globalVertex.sub(movingCube.position);
 
@@ -136,6 +176,7 @@ function update() {
 
         document.getElementById('explode_sound').play()
     } else {
+        //            message.innerText = "Safe";
         movingCube.material.color.setHex(0xffffe6);
     }
 
@@ -151,34 +192,47 @@ function update() {
         } else {
             cubes[i].position.z += 10;
         }
-    }
-    
-    //Menambah skor
-    score += 0.1;
-    scoreText.innerText = "Score:" + Math.floor(score);
-    
-    /*Perhitungan Skor*/
-    //Jika skor 0, maka game selesai
-    if (score < 0) { 
-        clearTimeout(
-            alert("Game Over!")
-        );
-        return score = 0;
-    } 
-    //Jika skor telah mencapai 100, maka menang
-    else if (score > 101) {
-        clearTimeout(
-            alert("You Win!")
-        );
-        return score = 0;
+        //                renderer.render(scene, camera);
     }
 
-// Return a random number between min and max
+    score += 0.1;
+    scoreText.innerText = "Score:" + Math.floor(score);
+
+    if(score < 0) {
+        //document.getElementById("score").value
+        clearTimeout (
+            alert("Game Over!")
+        );
+        return score=0;
+    }
+    else if(score > 101) {
+        clearTimeout (
+            alert("You Win!")
+        );
+        return score=0;
+    }
+    
+    /*
+    if(score < 0) {
+        setTimeout( 
+            function() {
+                alert("Game Over!")
+            },1000
+        );
+        score = 0;
+        return;
+    }
+    */
+    //controls.update();
+}
+
+
+// 返回一个介于min和max之间的随机数
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Return an integer random number between min and max
+// 返回一个介于min和max之间的整型随机数
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -197,6 +251,7 @@ function makeRandomCube() {
 
     var object = new THREE.Mesh(geometry, material);
     var box = new THREE.BoxHelper(object);
+    //            box.material.color.setHex(Math.random() * 0xffffff);
     box.material.color.setHex(0x4d2600);
 
     box.position.x = getRandomArbitrary(-250, 250);
