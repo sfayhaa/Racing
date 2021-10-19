@@ -211,19 +211,6 @@ function update() {
         );
         return score=0;
     }
-    
-    /*
-    if(score < 0) {
-        setTimeout( 
-            function() {
-                alert("Game Over!")
-            },1000
-        );
-        score = 0;
-        return;
-    }
-    */
-    //controls.update();
 }
 
 
