@@ -33,6 +33,8 @@ function init() {
         renderer = new THREE.CanvasRenderer();
     }
     renderer.setSize(screenWidth * 0.85, screenHeight * 0.85);
+    renderer.setClearColor(0xcc5200);
+    
     container = document.getElementById("ThreeJS");
     container.appendChild(renderer.domElement);
 
@@ -44,7 +46,7 @@ function init() {
     geometry.vertices.push(new THREE.Vector3(-250, -1, -3000));
     geometry.vertices.push(new THREE.Vector3(-300, -1, 200));
     material = new THREE.LineBasicMaterial({
-        color: 0x6699FF,
+        color: 0x4d3319,
         linewidth: 5,
         fog: true
     });
@@ -134,7 +136,7 @@ function update() {
 
         document.getElementById('explode_sound').play()
     } else {
-        movingCube.material.color.setHex(0x00FFFF);
+        movingCube.material.color.setHex(0xffffe6);
     }
 
     if (Math.random() < 0.03 && cubes.length < 30) {
@@ -195,8 +197,7 @@ function makeRandomCube() {
 
     var object = new THREE.Mesh(geometry, material);
     var box = new THREE.BoxHelper(object);
-    //            box.material.color.setHex(Math.random() * 0xffffff);
-    box.material.color.setHex(0xFF00FF);
+    box.material.color.setHex(0x4d2600);
 
     box.position.x = getRandomArbitrary(-250, 250);
     box.position.y = 1 + b / 2;
